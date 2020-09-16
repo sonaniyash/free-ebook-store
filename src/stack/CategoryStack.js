@@ -3,13 +3,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Category from '../scenes/Category';
 import BookDetail from '../scenes/Category/BookDetail';
 import BookList from '../scenes/Home/BookList';
+import BookPdfView from '../scenes/Category/BookPdfView';
 
 const Stack = createStackNavigator();
 
 function CategoryStack() {
     return (
         <Stack.Navigator
-            initialRouteName="Home"
+            initialRouteName="Category"
             screenOptions={{
                 headerShown: false,
             }}>

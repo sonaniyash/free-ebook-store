@@ -5,7 +5,8 @@ import _ from 'lodash';
 import {getHomePageBooks} from '../../services/book-store.service';
 import {S3_Bucket_Book_Img, GOOGLE_ADMOB} from '../../utility/constant';
 import Loader from '../../components/Loader';
-import {AdMobBanner} from 'react-native-admob';
+import Images from '../../components/Images';
+// import {AdMobBanner} from 'react-native-admob';
 
 function Home(props) {
   const [search, setSearch] = useState('');
@@ -92,8 +93,11 @@ function Home(props) {
                   }
                   underlayColor="white">
                   <View style={{width: 100, height: 150, margin: 10}}>
-                    <Image
-                      source={{uri: `${S3_Bucket_Book_Img}${item.image_url}`}}
+                    <Images
+                      source={[
+                        {uri: `${S3_Bucket_Book_Img}${item.image_url}`},
+                        {uri: `${S3_Bucket_Book_Img}no-image.png`},
+                      ]}
                       style={{height: '100%', width: '100%'}}
                     />
                     <Text style={{fontFamily: 'Ubuntu-Regular'}}>
@@ -121,8 +125,11 @@ function Home(props) {
                   }
                   underlayColor="white">
                   <View style={{width: 100, height: 150, margin: 10}}>
-                    <Image
-                      source={{uri: `${S3_Bucket_Book_Img}${item.image_url}`}}
+                    <Images
+                      source={[
+                        {uri: `${S3_Bucket_Book_Img}${item.image_url}`},
+                        {uri: `${S3_Bucket_Book_Img}no-image.png`},
+                      ]}
                       style={{height: '100%', width: '100%'}}
                     />
                     <Text style={{fontFamily: 'Ubuntu-Regular'}}>
@@ -150,8 +157,11 @@ function Home(props) {
                   }
                   underlayColor="white">
                   <View style={{width: 100, height: 150, margin: 10}}>
-                    <Image
-                      source={{uri: `${S3_Bucket_Book_Img}${item.image_url}`}}
+                    <Images
+                      source={[
+                        {uri: `${S3_Bucket_Book_Img}${item.image_url}`},
+                        {uri: `${S3_Bucket_Book_Img}no-image.png`},
+                      ]}
                       style={{height: '100%', width: '100%'}}
                     />
                     <Text style={{fontFamily: 'Ubuntu-Regular'}}>
@@ -164,13 +174,13 @@ function Home(props) {
           </ScrollView>
         )}
       </View>
-      <View style={{ width: '100%' }}>
+      {/* <View style={{ width: '100%' }}>
         <AdMobBanner
           adSize="smartBannerPortrait"
           adUnitID={GOOGLE_ADMOB.Banner}
           onAdFailedToLoad={error => console.error(error)}
         />
-      </View>
+      </View> */}
     </React.Fragment>
   );
 }

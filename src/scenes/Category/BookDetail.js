@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {View, Text, Image, ScrollView, PermissionsAndroid} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, ScrollView, PermissionsAndroid} from 'react-native';
 import Button from '../../components/Button';
 import {styles} from '../../assets/style/styles';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -8,12 +8,44 @@ import {
   S3_Bucket_Book_PDF,
   GOOGLE_ADMOB,
 } from '../../utility/constant';
-import {AdMobInterstitial} from 'react-native-admob';
+// import {AdMobInterstitial} from 'react-native-admob';
 import {Toast} from '../../components/Toast';
+import Images from '../../components/Images';
 
 function BookDetail(props) {
-  const[visible, setVisible] = useState(false);
-  // {props.route.params.item.name}
+  const [visible, setVisible] = useState(false);
+  const [imgLink, setImgLink] = useState(false);
+
+  useEffect(() => {
+    let ImgLink = '';
+    if (props.route.params.item && props.route.params.item.image_url) {
+      if (
+        props.route.params.item &&
+        props.route.params.item.languages &&
+        props.route.params.item.languages.toLowerCase() === 'english'
+      ) {
+        ImgLink = `${S3_Bucket_Book_Img}${props.route.params.item.image_url}`;
+      } else if (
+        props.route.params.item &&
+        props.route.params.item.languages &&
+        props.route.params.item.languages.toLowerCase() === 'gujarati'
+      ) {
+        ImgLink = `${S3_Bucket_Book_Img}guj/${
+          props.route.params.item.image_url
+        }`;
+      } else if (
+        props.route.params.item &&
+        props.route.params.item.languages &&
+        props.route.params.item.languages.toLowerCase() === 'hindi'
+      ) {
+        ImgLink = `${S3_Bucket_Book_Img}hindi/${
+          props.route.params.item.image_url
+        }`;
+      }
+      setImgLink(ImgLink);
+    }
+  }, []);
+
   const requestExternalStorageSavePermission = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -27,10 +59,35 @@ function BookDetail(props) {
 
   const downloadBook = () => {
     setVisible(true);
-    AdMobInterstitial.setAdUnitID(GOOGLE_ADMOB.Interstitial);
-    AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+    // AdMobInterstitial.setAdUnitID(GOOGLE_ADMOB.Interstitial);
+    // AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
     setTimeout(() => {
       requestExternalStorageSavePermission().then(permission => {
+        let download_Path = '';
+        if (
+          props.route &&
+          props.route.params &&
+          props.route.params.item &&
+          props.route.params.item.languages
+        ) {
+          if (props.route.params.item.languages.toLowerCase() === 'english') {
+            download_Path = `${S3_Bucket_Book_PDF}${
+              props.route.params.item.s3_url
+            }`;
+          } else if (
+            props.route.params.item.languages.toLowerCase() === 'gujarati'
+          ) {
+            download_Path = `${S3_Bucket_Book_PDF}guj/${
+              props.route.params.item.s3_url
+            }`;
+          } else if (
+            props.route.params.item.languages.toLowerCase() === 'hindi'
+          ) {
+            download_Path = `${S3_Bucket_Book_PDF}hindi/${
+              props.route.params.item.s3_url
+            }`;
+          }
+        }
         if (permission) {
           RNFetchBlob.config({
             addAndroidDownloads: {
@@ -42,11 +99,7 @@ function BookDetail(props) {
               description: 'File E-Books Store.',
             },
           })
-            .fetch(
-              'GET',
-              `${S3_Bucket_Book_PDF}${props.route.params.item.s3_url}`,
-              {},
-            )
+            .fetch('GET', download_Path, {})
             .then(res => {
               console.log('The file successfully saved to ', res.path());
             });
@@ -56,15 +109,41 @@ function BookDetail(props) {
   };
 
   const pdfBookReader = () => {
-    AdMobInterstitial.setAdUnitID(GOOGLE_ADMOB.Interstitial);
-    AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
-    const url = `${S3_Bucket_Book_PDF}${props.route.params.item.s3_url}`;
-    props.navigation.navigate('BookPdfView', {url: url});
+    let download_Path = '';
+    if (
+      props.route &&
+      props.route.params &&
+      props.route.params.item &&
+      props.route.params.item.languages
+    ) {
+      if (props.route.params.item.languages.toLowerCase() === 'english') {
+        download_Path = `${S3_Bucket_Book_PDF}${
+          props.route.params.item.s3_url
+        }`;
+      } else if (
+        props.route.params.item.languages.toLowerCase() === 'gujarati'
+      ) {
+        download_Path = `${S3_Bucket_Book_PDF}guj/${
+          props.route.params.item.s3_url
+        }`;
+      } else if (props.route.params.item.languages.toLowerCase() === 'hindi') {
+        download_Path = `${S3_Bucket_Book_PDF}hindi/${
+          props.route.params.item.s3_url
+        }`;
+      }
+    }
+    // AdMobInterstitial.setAdUnitID(GOOGLE_ADMOB.Interstitial);
+    // AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+    // const url = `${S3_Bucket_Book_PDF}${props.route.params.item.s3_url}`;
+    props.navigation.navigate('BookPdfView', {url: download_Path});
   };
 
   return (
     <View style={{flex: 1}}>
-      <Toast visible={visible} message="Please wait few seconds your file is on downloading." />
+      <Toast
+        visible={visible}
+        message="Please wait few seconds your file is on downloading."
+      />
       <ScrollView>
         <View
           style={{
@@ -90,10 +169,13 @@ function BookDetail(props) {
             alignSelf: 'center',
             marginTop: 5,
           }}>
-          <Image
-            source={{
-              uri: `${S3_Bucket_Book_Img}${props.route.params.item.image_url}`,
-            }}
+          <Images
+            source={[
+              {
+                uri: imgLink,
+              },
+              {uri: `${S3_Bucket_Book_Img}no-image.png`},
+            ]}
             style={{
               height: '100%',
               width: '100%',

@@ -12,7 +12,6 @@ import _ from 'lodash';
 import {getSearchBooks} from '../../services/book-store.service';
 import {S3_Bucket_Book_Img, GOOGLE_ADMOB} from '../../utility/constant';
 import Loader from '../../components/Loader';
-import {AdMobBanner} from 'react-native-admob';
 
 function BookList(props) {
   const [result, setResult] = useState([]);
@@ -21,29 +20,38 @@ function BookList(props) {
   const [searching, setSearching] = useState(true);
   const [search, setSearch] = useState('');
   const [cat_id, setCatID] = useState(0);
+  const [lang, setLang] = useState('');
   const [isLoadBtn, setIsLoadBtn] = useState(false);
 
   useEffect(() => {
     getBookData();
     setOffset(1);
-  }, [props.route.params.cat_id, props.route.params.search]);
+  }, [
+    props.route.params.cat_id,
+    props.route.params.search,
+    props.route.params.lang,
+  ]);
 
   const getBookData = async () => {
     let offsets = offset;
     if (
       search !== props.route.params.search ||
-      cat_id !== props.route.params.cat_id
+      cat_id !== props.route.params.cat_id ||
+      lang !== props.route.params.lang
     ) {
       offsets = 1;
       setResult([]);
+      setLang('');
     }
     setIsLoading(true);
     const req = {};
     req.cat_id = props.route.params.cat_id;
     req.search = props.route.params.search;
+    req.language = props.route.params.lang;
     req.offset = offsets;
     setCatID(props.route.params.cat_id);
     setSearch(props.route.params.search);
+    setLang(props.route.params.lang);
     const res = await getSearchBooks(req);
     if (res.status === 200 && res.result && res.result.length !== 0) {
       result.push(...res.result);
@@ -64,8 +72,24 @@ function BookList(props) {
   };
 
   const ListComponent = props => {
+    let ImgLink = '';
+    if (props.item && props.item.image_url) {
+      if (props.item && props.item.languages.toLowerCase() === 'english') {
+        ImgLink = `${S3_Bucket_Book_Img}${props.item.image_url}`;
+      } else if (
+        props.item &&
+        props.item.languages.toLowerCase() === 'gujarati'
+      ) {
+        ImgLink = `${S3_Bucket_Book_Img}guj/${props.item.image_url}`;
+      } else if (props.item && props.item.languages.toLowerCase() === 'hindi') {
+        ImgLink = `${S3_Bucket_Book_Img}hindi/${props.item.image_url}`;
+      }
+    }
+
     return (
-      <TouchableWithoutFeedback onPress={() => props.onPress(props.item)}>
+      <TouchableWithoutFeedback
+        onPress={() => props.onPress(props.item)}
+        key={props.item.id}>
         <View
           style={{
             borderWidth: 1.4,
@@ -81,10 +105,12 @@ function BookList(props) {
               flexDirection: 'row',
               flexWrap: 'wrap',
             }}>
-            <Image
-              source={{uri: `${S3_Bucket_Book_Img}${props.item.image_url}`}}
-              style={{width: '30%', height: 150}}
-            />
+            {props.item && props.item.languages.toLowerCase() !== 'hindi' && (
+              <Image
+                source={{uri: ImgLink}}
+                style={{width: '30%', height: 150}}
+              />
+            )}
             <View style={{flexDirection: 'column', width: '70%', padding: 10}}>
               <Text
                 style={{
@@ -182,11 +208,11 @@ function BookList(props) {
           </Text>
         </View>
       )}
-      <AdMobBanner
+      {/* <AdMobBanner
         adSize="smartBannerPortrait"
         adUnitID={GOOGLE_ADMOB.Banner}
         onAdFailedToLoad={error => console.error(error)}
-      />
+      /> */}
     </React.Fragment>
   );
 }

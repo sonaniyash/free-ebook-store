@@ -1,9 +1,9 @@
 import React from 'react';
 import { Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Category from '../scenes/Category';
+import Category from '../stack/CategoryStack';
 import HomeStack from '../stack/HomeStack';
-import Info from '../scenes/Info';
+import Language from '../stack/LanguageStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -55,10 +55,10 @@ function MyTabs(){
                 }}
             />
             <Tab.Screen
-                name="!nfo"
-                component={Info}
+                name="Language"
+                component={Language}
                 options={{
-                    tabBarLabel: '!nfo',
+                    tabBarLabel: 'Languages',
                     tabBarIcon: () => {
                         return (
                             <Image source={require('../assets/img/info.png')} style={{ height: 23, width: 23 }} />

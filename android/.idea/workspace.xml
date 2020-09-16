@@ -8,7 +8,6 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="681b64370605" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -23,7 +22,7 @@
   </component>
   <component name="GenerateSignedApkSettings">
     <option name="EXPORT_PRIVATE_KEY" value="false" />
-    <option name="KEY_STORE_PATH" value="F:\Yash\Personal\Free-Book-PDF\private key\ebook-store.keystore" />
+    <option name="KEY_STORE_PATH" value="F:\Yash\Personal\Free-Book-PDF\playstore\private key\ebook-store.keystore" />
     <option name="KEY_ALIAS" value="ebook-store" />
     <option name="REMEMBER_PASSWORDS" value="true" />
   </component>
@@ -34,7 +33,7 @@
     <property name="ExportApk.ApkPath" value="F:\Yash\Personal\Free-Book-PDF" />
     <property name="ExportApk.BuildVariants" value="release" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../playstore/private key/ebook-store.keystore" />
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
   </component>
   <component name="RunDashboard">

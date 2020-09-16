@@ -2,10 +2,10 @@ import React from 'react';
 import {View, Text, ScrollView, TouchableHighlight} from 'react-native';
 import {getCategoryList} from '../../services/book-store.service';
 import Loader from '../../components/Loader';
-import {
-  AdMobBanner,
-} from 'react-native-admob';
-import { GOOGLE_ADMOB } from '../../utility/constant';
+// import {
+//   AdMobBanner,
+// } from 'react-native-admob';
+// import { GOOGLE_ADMOB } from '../../utility/constant';
 
 class Category extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class Category extends React.Component {
   }
 
   searchBook = id => {
-    this.props.navigation.navigate('BookList', {search: '', cat_id: id});
+    this.props.navigation.navigate('BookList', {search: '', cat_id: id, lang: ''});
   };
 
   getCategory = async () => {
@@ -82,11 +82,11 @@ class Category extends React.Component {
             ))}
           </View>
         </ScrollView>
-        <AdMobBanner
+        {/* <AdMobBanner
           adSize="smartBannerPortrait"
           adUnitID={GOOGLE_ADMOB.Banner}
           onAdFailedToLoad={error => console.error(error)}
-        />
+        /> */}
       </View>
     );
   }
