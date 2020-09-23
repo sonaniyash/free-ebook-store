@@ -9,7 +9,11 @@ import {
   S3_Bucket_Book_PDF,
   GOOGLE_ADMOB,
 } from '../../utility/constant';
-import {InterstitialAd, BannerAd, BannerAdSize} from '@react-native-firebase/admob';
+import {
+  InterstitialAd,
+  BannerAd,
+  BannerAdSize,
+} from '@react-native-firebase/admob';
 import {Toast} from '../../components/Toast';
 import Images from '../../components/Images';
 
@@ -18,6 +22,14 @@ const inter = InterstitialAd.createForAdRequest(GOOGLE_ADMOB.Interstitial, {
   keywords: ['book', 'fashion', 'clothing'],
 });
 
+const interDownload = InterstitialAd.createForAdRequest(
+  GOOGLE_ADMOB.Interstitial,
+  {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['book', 'fashion', 'clothing'],
+  },
+);
+
 function BookDetail(props) {
   const [visible, setVisible] = useState(false);
   const [imgLink, setImgLink] = useState(false);
@@ -25,32 +37,13 @@ function BookDetail(props) {
   useEffect(() => {
     let ImgLink = '';
     if (props.route.params.item && props.route.params.item.image_url) {
-      if (
-        props.route.params.item &&
-        props.route.params.item.languages &&
-        props.route.params.item.languages.toLowerCase() === 'english'
-      ) {
-        ImgLink = `${S3_Bucket_Book_Img}${props.route.params.item.image_url}`;
-      } else if (
-        props.route.params.item &&
-        props.route.params.item.languages &&
-        props.route.params.item.languages.toLowerCase() === 'gujarati'
-      ) {
-        ImgLink = `${S3_Bucket_Book_Img}guj/${
-          props.route.params.item.image_url
-        }`;
-      } else if (
-        props.route.params.item &&
-        props.route.params.item.languages &&
-        props.route.params.item.languages.toLowerCase() === 'hindi'
-      ) {
-        ImgLink = `${S3_Bucket_Book_Img}hindi/${
-          props.route.params.item.image_url
-        }`;
-      }
+      ImgLink = `${props.route.params.item.host_img}${
+        props.route.params.item.image_url
+      }`;
       setImgLink(ImgLink);
     }
     inter.load();
+    interDownload.load();
   }, []);
 
   const requestExternalStorageSavePermission = async () => {
@@ -66,11 +59,15 @@ function BookDetail(props) {
 
   const downloadBook = async () => {
     setVisible(true);
-    inter.show();
     await analytics().logEvent('download', {
       book: props.route.params.item,
       language: props.route.params.item.languages.toLowerCase(),
     });
+    interDownload.load();
+    interDownload
+      .show()
+      .then(() => {})
+      .catch(() => {});
 
     setTimeout(() => {
       requestExternalStorageSavePermission().then(permission => {
@@ -81,23 +78,9 @@ function BookDetail(props) {
           props.route.params.item &&
           props.route.params.item.languages
         ) {
-          if (props.route.params.item.languages.toLowerCase() === 'english') {
-            download_Path = `${S3_Bucket_Book_PDF}${
-              props.route.params.item.s3_url
-            }`;
-          } else if (
-            props.route.params.item.languages.toLowerCase() === 'gujarati'
-          ) {
-            download_Path = `${S3_Bucket_Book_PDF}guj/${
-              props.route.params.item.s3_url
-            }`;
-          } else if (
-            props.route.params.item.languages.toLowerCase() === 'hindi'
-          ) {
-            download_Path = `${S3_Bucket_Book_PDF}hindi/${
-              props.route.params.item.s3_url
-            }`;
-          }
+          download_Path = `${props.route.params.item.host}${
+            props.route.params.item.s3_url
+          }`;
         }
         if (permission) {
           RNFetchBlob.config({
@@ -130,25 +113,15 @@ function BookDetail(props) {
       await analytics().logEvent('read', {
         book: props.route.params.item,
         language: props.route.params.item.languages.toLowerCase(),
-      })
-      if (props.route.params.item.languages.toLowerCase() === 'english') {
-        download_Path = `${S3_Bucket_Book_PDF}${
-          props.route.params.item.s3_url
-        }`;
-      } else if (
-        props.route.params.item.languages.toLowerCase() === 'gujarati'
-      ) {
-        download_Path = `${S3_Bucket_Book_PDF}guj/${
-          props.route.params.item.s3_url
-        }`;
-      } else if (props.route.params.item.languages.toLowerCase() === 'hindi') {
-        download_Path = `${S3_Bucket_Book_PDF}hindi/${
-          props.route.params.item.s3_url
-        }`;
-      }
+      });
+      download_Path = `${props.route.params.item.host}${
+        props.route.params.item.s3_url
+      }`;
     }
-    inter.show();
-    // const url = `${S3_Bucket_Book_PDF}${props.route.params.item.s3_url}`;
+    inter.load();
+    inter.show()
+      .then(() => {})
+      .catch(() => {});
     props.navigation.navigate('BookPdfView', {url: download_Path});
   };
 
@@ -223,32 +196,37 @@ function BookDetail(props) {
         </View>
         <View style={{margin: 10}}>
           <Text
-            style={{fontSize: 16, fontFamily: 'Ubuntu-Bold', color: '#4267B2'}}>
+            style={{
+              fontSize: 16,
+              fontFamily: 'Ubuntu-Bold',
+              color: '#4267B2',
+              marginBottom: 10,
+            }}>
             Book Name - {props.route.params.item.name}
           </Text>
-          <Text style={{fontSize: 16, fontFamily: 'Ubuntu-Regular'}}>
+          <BannerAd
+            unitId={GOOGLE_ADMOB.Banner}
+            size={BannerAdSize.FULL_BANNER}
+          />
+          <Text
+            style={{fontSize: 16, fontFamily: 'Ubuntu-Regular', marginTop: 5}}>
             Category - {props.route.params.item.Cat_Name}
           </Text>
           <Text style={{fontSize: 16, fontFamily: 'Ubuntu-Regular'}}>
-            Authors - {props.route.params.item.authors || '#'}
+            Authors - {props.route.params.item.authors || 'N/A'}
           </Text>
           <Text style={{fontSize: 16, fontFamily: 'Ubuntu-Regular'}}>
-            Pages - {props.route.params.item.pages || '#'}
+            Pages - {props.route.params.item.pages || 'N/A'}
           </Text>
           <Text style={{fontSize: 16, fontFamily: 'Ubuntu-Regular'}}>
             Languages - {props.route.params.item.languages || 'English'}
           </Text>
           <Text style={{fontSize: 16, fontFamily: 'Ubuntu-Regular'}}>
-            Published Date - {props.route.params.item.published || '#'}
-          </Text>
-          <BannerAd unitId={GOOGLE_ADMOB.Banner} size={BannerAdSize.FULL_BANNER} />
-          <Text
-            style={{fontSize: 16, fontFamily: 'Ubuntu-Bold', marginTop: 10}}>
-            Description -
+            Published Date - {props.route.params.item.published || 'N/A'}
           </Text>
           <Text
-            style={{fontSize: 14, fontFamily: 'Ubuntu-Regular', marginTop: 5}}>
-            {props.route.params.item.description || '-'}
+            style={{fontSize: 16, fontFamily: 'Ubuntu-Regular', marginTop: 10}}>
+            Description - {props.route.params.item.description || 'N/A'}
           </Text>
         </View>
       </ScrollView>

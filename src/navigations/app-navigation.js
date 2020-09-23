@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Category from '../stack/CategoryStack';
 import HomeStack from '../stack/HomeStack';
 import Language from '../stack/LanguageStack';
+import Student from '../stack/StudentStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,10 +35,10 @@ function MyTabs(){
                 name="Home"
                 component={HomeStack}
                 options={{
-                    tabBarLabel: 'Books',
+                    tabBarLabel: 'Home',
                     tabBarIcon: () => {
                         return (
-                            <Image source={require('../assets/img/book_icon.png')} style={{ height: 25, width: 25 }} />
+                            <Image source={require('../assets/img/home.png')} style={{ height: 25, width: 25 }} />
                         )
                     }
                 }}
@@ -62,6 +63,18 @@ function MyTabs(){
                     tabBarIcon: () => {
                         return (
                             <Image source={require('../assets/img/info.png')} style={{ height: 23, width: 23 }} />
+                        )
+                    }
+                }}
+            />
+            <Tab.Screen
+                name="Student"
+                component={Student}
+                options={{
+                    tabBarLabel: 'Study Material',
+                    tabBarIcon: () => {
+                        return (
+                            <Image source={require('../assets/img/book_icon.png')} style={{ height: 23, width: 23 }} />
                         )
                     }
                 }}

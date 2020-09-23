@@ -44,16 +44,28 @@ class Category extends React.Component {
     return (
       <View style={{flex: 1}}>
         <Loader loading={this.state.loading} />
+        <View style={{backgroundColor: '#4267B2', paddingTop: 8}}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Ubuntu-Bold',
+                paddingBottom: 8,
+                color: 'white',
+                textAlign: 'center',
+              }}>
+              CATEGORY
+            </Text>
+          </View>
         <ScrollView>
           <View
             style={{
               // flexDirection: 'row',
               // flexWrap: 'wrap',
-              marginTop: 5,
+              // marginTop: 5,
               marginBottom: 15,
             }}>
             {this.state.cat_list.map(item => (
-              <View style={{height: 40, padding: 10, margin: 5}}>
+              <View style={{height: 40, padding: 10, marginBottom: 15}}>
                 <TouchableHighlight
                   onPress={() => this.searchBook(item.id)}
                   underlayColor="white">
@@ -61,7 +73,7 @@ class Category extends React.Component {
                     style={{
                       borderWidth: 1,
                       borderColor: '#4267B2',
-                      borderStyle: 'dotted',
+                      borderStyle: 'solid',
                       padding: 10,
                       borderRadius: 10,
                     }}>
@@ -77,7 +89,7 @@ class Category extends React.Component {
                         fontSize: 16,
                         color: '#4267B2',
                       }}>
-                      {item.name}
+                      {item.name} {` ( ${item.count} )`}
                     </Text>
                   </View>
                 </TouchableHighlight>

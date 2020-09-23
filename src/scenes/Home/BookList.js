@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 import {getSearchBooks} from '../../services/book-store.service';
-import {S3_Bucket_Book_Img, GOOGLE_ADMOB} from '../../utility/constant';
+// import {S3_Bucket_Book_Img, GOOGLE_ADMOB} from '../../utility/constant';
 import Loader from '../../components/Loader';
 
 function BookList(props) {
@@ -74,16 +74,7 @@ function BookList(props) {
   const ListComponent = props => {
     let ImgLink = '';
     if (props.item && props.item.image_url) {
-      if (props.item && props.item.languages.toLowerCase() === 'english') {
-        ImgLink = `${S3_Bucket_Book_Img}${props.item.image_url}`;
-      } else if (
-        props.item &&
-        props.item.languages.toLowerCase() === 'gujarati'
-      ) {
-        ImgLink = `${S3_Bucket_Book_Img}guj/${props.item.image_url}`;
-      } else if (props.item && props.item.languages.toLowerCase() === 'hindi') {
-        ImgLink = `${S3_Bucket_Book_Img}hindi/${props.item.image_url}`;
-      }
+      ImgLink = `${props.item.host_img}${props.item.image_url}`;
     }
 
     return (
@@ -111,7 +102,7 @@ function BookList(props) {
                 style={{width: '30%', height: 150}}
               />
             )}
-            <View style={{flexDirection: 'column', width: '70%', padding: 10}}>
+            <View style={{flexDirection: 'column', width: props.item.languages.toLowerCase() !== 'hindi' ? '70%': '100%', padding: 10}}>
               <Text
                 style={{
                   fontFamily: 'Ubuntu-Bold',
@@ -179,8 +170,21 @@ function BookList(props) {
   return (
     <React.Fragment>
       <Loader loading={isLoading} />
+      <View style={{backgroundColor: '#4267B2', paddingTop: 8}}>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: 'Ubuntu-Bold',
+            paddingBottom: 8,
+            color: 'white',
+            textAlign: 'center',
+          }}>
+          BOOKS
+        </Text>
+      </View>
       {result && result.length !== 0 && (
         <ScrollView>
+          {console.log(result)}
           <FlatList
             data={result}
             style={{fontFamily: 'Ubuntu-Regular'}}
@@ -208,11 +212,6 @@ function BookList(props) {
           </Text>
         </View>
       )}
-      {/* <AdMobBanner
-        adSize="smartBannerPortrait"
-        adUnitID={GOOGLE_ADMOB.Banner}
-        onAdFailedToLoad={error => console.error(error)}
-      /> */}
     </React.Fragment>
   );
 }

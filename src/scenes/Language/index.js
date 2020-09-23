@@ -36,17 +36,17 @@ class Language extends React.Component {
         <View
           style={{
             backgroundColor: '#4267B2',
-            paddingTop: 10,
-            paddingBottom: 10,
+            paddingTop: 8,
           }}>
           <Text
             style={{
               color: 'white',
-              fontFamily: 'Ubuntu-Regular',
+              fontFamily: 'Ubuntu-Bold',
               textAlign: 'center',
-              fontSize: 18,
+              fontSize: 16,
+              paddingBottom: 8,
             }}>
-            Languages
+            LANGUAGES
           </Text>
         </View>
         <View style={{padding: 10}}>

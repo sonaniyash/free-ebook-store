@@ -71,7 +71,7 @@ function Home(props) {
               color: 'white',
               textAlign: 'center',
             }}>
-            FREE BOOKS STORE
+            FREE E-BOOKS STORE
           </Text>
         </View>
         {!loading && (
@@ -96,7 +96,7 @@ function Home(props) {
                   <View style={{width: 100, height: 150, margin: 10}}>
                     <Images
                       source={[
-                        {uri: `${S3_Bucket_Book_Img}${item.image_url}`},
+                        {uri: `${item.host_img}${item.image_url}`},
                         {uri: `${S3_Bucket_Book_Img}no-image.png`},
                       ]}
                       style={{height: '100%', width: '100%'}}
@@ -136,7 +136,7 @@ function Home(props) {
                   <View style={{width: 100, height: 150, margin: 10}}>
                     <Images
                       source={[
-                        {uri: `${S3_Bucket_Book_Img}${item.image_url}`},
+                        {uri: `${item.host_img}${item.image_url}`},
                         {uri: `${S3_Bucket_Book_Img}no-image.png`},
                       ]}
                       style={{height: '100%', width: '100%'}}
@@ -168,7 +168,7 @@ function Home(props) {
                   <View style={{width: 100, height: 150, margin: 10}}>
                     <Images
                       source={[
-                        {uri: `${S3_Bucket_Book_Img}${item.image_url}`},
+                        {uri: `${item.host_img}${item.image_url}`},
                         {uri: `${S3_Bucket_Book_Img}no-image.png`},
                       ]}
                       style={{height: '100%', width: '100%'}}

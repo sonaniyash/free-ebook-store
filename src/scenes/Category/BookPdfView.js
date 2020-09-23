@@ -17,6 +17,7 @@ function BookPdfView(props) {
           resourceType='url'
           onLoad={() => setLoading(false)}
           onError={(error) => console.log('Cannot render PDF', error)}
+          urlPr
         />
     </View>
   );
