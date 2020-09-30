@@ -77,10 +77,6 @@ class Category extends React.Component {
                       padding: 10,
                       borderRadius: 10,
                     }}>
-                    {/* <Image
-                      source={{uri: `${S3_Bucket_Category}${item.icon}`}}
-                      style={{width: '100%', height: '90%'}}
-                    /> */}
                     <Text
                       style={{
                         fontFamily: 'Ubuntu-Bold',

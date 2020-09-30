@@ -8,7 +8,7 @@ export const S3_Bucket_Book_Img = 'https://bookstore-pdf.s3.ap-south-1.amazonaws
 export const S3_Bucket_Book_PDF = 'https://bookstore-pdf.s3.ap-south-1.amazonaws.com/book-pdf/';
 
 export const GOOGLE_ADMOB = Object.freeze({
-    Banner: TestIds.BANNER,
+    Banner: 'ca-app-pub-4398929016347414/4672455213',
     Rewarded: TestIds.REWARDED,
-    Interstitial: TestIds.INTERSTITIAL,
+    Interstitial: 'ca-app-pub-4398929016347414/7330585752',
 });

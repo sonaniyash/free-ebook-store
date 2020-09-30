@@ -4,6 +4,7 @@ import analytics from '@react-native-firebase/analytics';
 import Button from '../../components/Button';
 import {styles} from '../../assets/style/styles';
 import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'react-native-fetch-blob'
 import {
   S3_Bucket_Book_Img,
   S3_Bucket_Book_PDF,
@@ -119,9 +120,11 @@ function BookDetail(props) {
       }`;
     }
     inter.load();
-    inter.show()
+    inter
+      .show()
       .then(() => {})
       .catch(() => {});
+    setVisible(true);
     props.navigation.navigate('BookPdfView', {url: download_Path});
   };
 
@@ -129,7 +132,7 @@ function BookDetail(props) {
     <View style={{flex: 1}}>
       <Toast
         visible={visible}
-        message="Please wait few seconds your file is on downloading."
+        message="Please wait few seconds your file is on loading."
       />
       <ScrollView>
         <View

@@ -111,6 +111,7 @@ function BookDetail(props) {
     }
     inter.load();
     inter.show();
+    setVisible(true);
     props.navigation.navigate('StudyPDFViewer', {url: download_Path});
   };
 
@@ -118,7 +119,7 @@ function BookDetail(props) {
     <View style={{flex: 1}}>
       <Toast
         visible={visible}
-        message="Please wait few seconds your file is on downloading."
+        message="Please wait few seconds your file is on loading."
       />
       <ScrollView>
         <View
