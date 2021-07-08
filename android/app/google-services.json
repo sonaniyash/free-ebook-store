@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "760643456722",
+    "firebase_url": "https://free-e-books-store.firebaseio.com",
+    "project_id": "free-e-books-store",
+    "storage_bucket": "free-e-books-store.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760643456722:android:601f6d6b477874cc1de70b",
+        "android_client_info": {
+          "package_name": "com.free.ebook.store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760643456722-2qqjbiteg173q8i9h85pl4bha0l42071.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM-AN8U4aJf-R06AqbKNW0xI3K0rh7xbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760643456722-2qqjbiteg173q8i9h85pl4bha0l42071.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-4398929016347414~9924781895"
+    }
+  ],
+  "configuration_version": "1"
+}
